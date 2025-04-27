@@ -1,0 +1,32 @@
+<div class="px-4 py-16 max-w-screen-xl mx-auto">
+    <div class="mb-10">
+        <p class="text-green-600 font-semibold mb-2 text-left">Explore Programs</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-left">Our Most Popular Services</h2>
+        <p class="text-gray-500 mt-2 text-left">
+            Let's join our famous class, the knowledge provided will definitely be useful for you.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let service of services"
+            class="bg-white shadow-lg rounded-xl p-5 flex flex-col items-start cursor-pointer hover:shadow-xl transition"
+            [routerLink]="['/details', service.id]">
+            <img [src]="service.image" alt="Service image" class="rounded-md w-full mb-4 h-52 object-cover" />
+
+            <p class="capitalize text-green-600 font-semibold text-sm">{{ service.type }}</p>
+            <h3 class="text-xl font-bold text-gray-900 mt-1 mb-1">{{ service.title }}</h3>
+            <p class="text-gray-500 text-sm mb-2">{{ service.description }}</p>
+
+            <p class="text-sm text-gray-500">Date: {{ service.date | date:'mediumDate' }}</p>
+            <p class="text-sm text-red-600 mt-1">Remaining: {{ service.seatsLeft }} place</p>
+
+            <button [disabled]="service.date > today" class="mt-4 px-6 py-2 rounded-full font-semibold transition-all"
+                [ngClass]="{
+            'bg-green-500 text-white hover:bg-green-600': service.date <= today,
+            'bg-gray-300 text-gray-500 cursor-not-allowed': service.date > today
+          }">
+                Join
+            </button>
+        </div>
+    </div>
+</div>

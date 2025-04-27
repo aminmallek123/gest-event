@@ -1,0 +1,236 @@
+<div class="bg-white rounded-lg shadow-sm p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-semibold text-gray-800">Liste des evenements</h1>
+    <button class="bg-[#5a6acf] text-white p-2 rounded-full">
+      <!-- Plus Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="mb-6">
+    <button class="bg-[#a6abc8] text-white py-2 px-4 rounded-md hover:bg-[#8f95b8] transition-colors"
+      (click)="openModal()">
+      Ajouter event
+    </button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr class="text-left text-gray-500 border-b">
+          <th class="pb-3 font-medium">Titre</th>
+          <th class="pb-3 font-medium">Categorie</th>
+          <th class="pb-3 font-medium">Date</th>
+          <th class="pb-3 font-medium">lieux</th>
+          <th class="pb-3 font-medium">Description</th>
+          <th class="pb-3 font-medium">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of events" class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-4">{{ event.title }}</td>
+          <td class="py-4">{{ event.category }}</td>
+          <td class="py-4">{{ event.date }}</td>
+          <td class="py-4">{{ event.location }}</td>
+          <td class="py-4">{{ event.description }}</td>
+          <td class="py-4">
+            <div class="flex gap-2">
+              <!-- Eye -->
+              <app-detailsevent [idEvent]="event.id"></app-detailsevent>
+
+              <!-- Edit -->
+              <button class="p-1 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5m-10-7l10 10" />
+                </svg>
+              </button>
+
+              <!-- X -->
+              <button class="p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center mt-6">
+    <nav class="flex items-center gap-1">
+      <!-- Chevron Left -->
+      <button class="p-2 rounded-md hover:bg-gray-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rotate-90" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <button class="h-8 w-8 rounded-md flex items-center justify-center"
+        [ngClass]="{ 'bg-[#5a6acf] text-white': currentPage === 1, 'hover:bg-gray-100 text-gray-700': currentPage !== 1 }"
+        (click)="setCurrentPage(1)">
+        1
+      </button>
+      <button class="h-8 w-8 rounded-md flex items-center justify-center"
+        [ngClass]="{ 'bg-[#5a6acf] text-white': currentPage === 2, 'hover:bg-gray-100 text-gray-700': currentPage !== 2 }"
+        (click)="setCurrentPage(2)">
+        2
+      </button>
+      <button class="h-8 w-8 rounded-md flex items-center justify-center"
+        [ngClass]="{ 'bg-[#5a6acf] text-white': currentPage === 3, 'hover:bg-gray-100 text-gray-700': currentPage !== 3 }"
+        (click)="setCurrentPage(3)">
+        3
+      </button>
+      <button class="h-8 w-8 rounded-md flex items-center justify-center"
+        [ngClass]="{ 'bg-[#5a6acf] text-white': currentPage === 4, 'hover:bg-gray-100 text-gray-700': currentPage !== 4 }"
+        (click)="setCurrentPage(4)">
+        4
+      </button>
+
+      <span class="px-2">...</span>
+
+      <button class="h-8 w-8 rounded-md flex items-center justify-center hover:bg-gray-100 text-gray-700">
+        40
+      </button>
+
+      <!-- Chevron Right -->
+      <button class="p-2 rounded-md hover:bg-gray-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 -rotate-90" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    </nav>
+  </div>
+</div>
+<!-- event-modal.component.html -->
+<div *ngIf="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg w-full max-w-3xl mx-4 relative">
+    <!-- Close button -->
+    <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" (click)="closeModal()">
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <div class="p-6">
+      <h2 class="text-2xl font-semibold text-[#1a906b] mb-6">Ajout event :</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-6">
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Titre:</label>
+            <input type="text"
+              class="w-full px-4 py-3 bg-[#f1f2f9] border-none rounded-md focus:ring-2 focus:ring-[#5a6acf]"
+              [(ngModel)]="eventData.title" />
+          </div>
+
+          <!-- Date -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date:</label>
+            <div class="flex items-center relative">
+              <input type="date"
+                class="w-full px-4 py-3 bg-[#f1f2f9] border-none rounded-md focus:ring-2 focus:ring-[#5a6acf]"
+                [(ngModel)]="eventData.date" />
+              <svg class="absolute right-3 h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3M16 7V3M3 11h18M5 19h14a2 2 0 002-2v-7H3v7a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Lieu:</label>
+            <input type="text"
+              class="w-full px-4 py-3 bg-[#f1f2f9] border-none rounded-md focus:ring-2 focus:ring-[#5a6acf]"
+              [(ngModel)]="eventData.location" />
+          </div>
+
+          <!-- Image Upload -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Image:</label>
+            <label
+              class="flex items-center justify-center w-full h-32 px-4 py-3 bg-[#f1f2f9] border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:bg-[#e5e8f7]"
+              (click)="imageInput.click()">
+              <ng-container *ngIf="imagePreview; else noImage">
+                <img [src]="imagePreview" alt="Preview" class="w-full h-full object-contain" />
+              </ng-container>
+              <ng-template #noImage>
+                <div class="flex flex-col items-center justify-center text-gray-500">
+                  <svg class="h-10 w-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 16l4-4a4 4 0 015.656 0l.344.344a4 4 0 005.656 0l2-2M3 20h18" />
+                  </svg>
+                  <span class="text-sm">Cliquez pour ajouter une image</span>
+                </div>
+              </ng-template>
+              <input type="file" #imageInput accept="image/*" class="hidden" (change)="handleImageChange($event)" />
+            </label>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Personnel List -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">List personnel:</label>
+            <div class="relative">
+              <select [(ngModel)]="selectedPersonnel"
+                class="w-full px-4 py-3 bg-[#f1f2f9] border-none rounded-md focus:ring-2 focus:ring-[#5a6acf] appearance-none">
+                <option value="" disabled selected>Sélectionner le personnel</option>
+                <option value="salman">Salman</option>
+                <option value="med_amin">Med Amin</option>
+              </select>
+              <svg class="absolute right-3 top-3 h-5 w-5 text-gray-500 pointer-events-none" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+
+            <div class="mt-4 bg-[#f1f2f9] p-4 rounded-md">
+              <h3 class="font-medium mb-2">Personnel sélectionné:</h3>
+              <ul class="space-y-2">
+                <li class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-[#5a6acf] rounded-full"></span>
+                  <span>Salman - animateur</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-[#5a6acf] rounded-full"></span>
+                  <span>Med Amin - technicien</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Description:</label>
+            <textarea rows="5"
+              class="w-full px-4 py-3 bg-[#f1f2f9] border-none rounded-md focus:ring-2 focus:ring-[#5a6acf] resize-none"
+              [(ngModel)]="eventData.description"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end gap-4 mt-8">
+        <button class="px-6 py-2 bg-[#a6abc8] text-white rounded-md hover:bg-[#8f95b8] transition-colors"
+          (click)="closeModal()">
+          Annuler
+        </button>
+        <button class="px-6 py-2 bg-[#5932ea] text-white rounded-md hover:bg-[#4a29c4] transition-colors">
+          Enregistrer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

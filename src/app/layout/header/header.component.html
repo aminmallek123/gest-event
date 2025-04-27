@@ -1,0 +1,31 @@
+<header class="container mx-auto py-4 px-4 md:px-6 flex justify-between items-center bg-white sticky top-0 z-10 shadow-sm">
+    <div class="flex items-center">
+      <div class="relative h-12 w-12">
+        <svg viewBox="0 0 40 40" class="h-12 w-12 fill-[#ff9b26]">
+          <path
+            d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 7c7.18 0 13 5.82 13 13s-5.82 13-13 13S7 27.18 7 20 12.82 7 20 7zm0 5c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+      <div class="ml-2 text-gray-500 font-light text-sm">WEEKEND</div>
+    </div>
+    <nav class="hidden md:flex space-x-6">
+      <a routerLink="/" class="text-[#101828] hover:text-[#1a906b] transition-colors">Home</a>
+      <a routerLink="/about" class="text-[#101828] hover:text-[#1a906b] transition-colors">About us</a>
+      <a routerLink="/courses" class="text-[#101828] hover:text-[#1a906b] transition-colors">Courses</a>
+      <a routerLink="/contact" class="text-[#101828] hover:text-[#1a906b] transition-colors">Contact us</a>
+      <a routerLink="/faq" class="text-[#101828] hover:text-[#1a906b] transition-colors">FAQ's</a>
+    </nav>
+  
+    <button class="md:hidden">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </header>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+
+  

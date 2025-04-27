@@ -1,0 +1,61 @@
+<div class="min-h-screen bg-[#f9f9fa] flex flex-col">
+    <header class="bg-white border-b border-gray-200 py-3 px-6 flex justify-between items-center">
+        <!-- Logo et texte -->
+        <div class="flex items-center">
+            <div class="relative h-10 w-10">
+                <svg viewBox="0 0 40 40" class="h-10 w-10 fill-[#ff9b26]">
+                    <path
+                        d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 7c7.18 0 13 5.82 13 13s-5.82 13-13 13S7 27.18 7 20 12.82 7 20 7zm0 5c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z"
+                        fill-rule="evenodd" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-1 text-gray-500 font-light text-sm">WEEKEND</div>
+        </div>
+
+        <!-- Barre de recherche -->
+        <div class="relative max-w-xl w-full mx-4">
+            <input type="text" placeholder="Search"
+                class="w-full py-2 pl-4 pr-10 rounded-md bg-[#f6f6fb] border-none focus:ring-2 focus:ring-[#1a906b] focus:outline-none" />
+            <svg class="absolute right-3 top-2.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 4a6 6 0 11-6 6 6 6 0 016-6zM16 16l4 4-4-4z" />
+            </svg>
+        </div>
+
+        <!-- Notifications et profil utilisateur -->
+        <div class="flex items-center gap-4">
+            <button class="relative">
+                <svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.403-1.403A9.969 9.969 0 0020 10V6a2 2 0 10-4 0v2a6 6 0 00-12 0v4c0 2.21 1.79 4 4 4h4l1.403 1.403A9.969 9.969 0 0015 17z" />
+                </svg>
+                <span
+                    class="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+                    1
+                </span>
+            </button>
+
+            <!-- Profil utilisateur -->
+            <div class="flex items-center gap-2">
+                <div
+                    class="h-8 w-8 rounded-full bg-[#1a906b] flex items-center justify-center text-white overflow-hidden">
+                    <img src="/assets/placeholder.svg" alt="User avatar" class="object-cover w-full h-full" />
+                </div>
+                <span class="text-sm font-medium">Med Amin Mallek</span>
+                <svg class="h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+        </div>
+    </header>
+    <div class="flex h-screen">
+        <app-sidebar></app-sidebar>
+        <!-- Content -->
+        <main class="flex-1 bg-[#f9f9fb] p-8">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>
