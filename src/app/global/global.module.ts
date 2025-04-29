@@ -18,7 +18,7 @@ import { GlobalRoutingModule } from './global-routing.module';
     CourseCardsComponent,
     ServiceComponent,
     DetailEvenementComponent,
-    JoinComponent
+    JoinComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +29,8 @@ import { GlobalRoutingModule } from './global-routing.module';
   ],
   exports: [
     HerosComponent,
+    ServiceComponent,
+
   ]
 })
 export class GlobalModule { }

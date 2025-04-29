@@ -8,6 +8,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { CategoryComponent } from './compoent/category/category.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { DetailseventComponent } from './compoent/detailsevent/detailsevent.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 
@@ -25,8 +26,8 @@ import { DetailseventComponent } from './compoent/detailsevent/detailsevent.comp
     NgChartsModule,
     CommonModule,
     NgChartsModule,
-    AdminRoutingModule
-    
+    AdminRoutingModule,
+    HttpClientModule
   ],
   exports: [
     EvenementComponent

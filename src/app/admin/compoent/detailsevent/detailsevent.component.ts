@@ -1,54 +1,93 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { AffectationService } from '../../service/affectation.service';
+import { PersonnelService } from '../../service/personnel.service';
 
 @Component({
   selector: 'app-detailsevent',
   templateUrl: './detailsevent.component.html',
   styleUrls: ['./detailsevent.component.css']
 })
-export class DetailseventComponent {
+export class DetailseventComponent implements OnInit {
   @Input() idEvent: any;
   showViewModal: boolean = false;
   showRegistrationsModal: boolean = false;
-  selectedEvent: any = {
-    category: 'workshop',
-    title: 'Angular Workshop',
-    location: 'Online',
-    date: '2025-05-01',
-    description: 'A workshop to learn Angular basics.',
-    image: '/angular-logo.png',
-    participants: {
-      total: 50,
-      remaining: 10,
-      list: [
-        { id: 1, name: 'John Doe', phone: '1234567890', email: 'john.doe@example.com', preference: 'Vegetarian' },
-        { id: 2, name: 'Jane Smith', phone: '0987654321', email: 'jane.smith@example.com', preference: 'Non-Vegetarian' }
-      ]
-    },
-    personnel: {
-      animateur: 'Alex',
-      techniciens: 'Bob, Alice',
-      hotes: 'Charlie'
-    }
-  };
+  showDeleteConfirmationModal: boolean = false;
+  selectedEvent: any;
+  selectedPersonnel: any = null;
   registrationPage: number = 1;
 
-  closeViewModal() {
+  constructor(
+    private affectationService: AffectationService,
+    private personnelService: PersonnelService
+  ) {}
+
+  ngOnInit() {}
+
+  // Method to open the event modal and fetch event details
+  openViewModal(): void {
+    this.showViewModal = true;
+    this.getEventDetails(this.idEvent); // Fetch event details using idEvent
+  }
+
+  // Get event details along with personnel by id
+  getEventDetails(eventId: any): void {
+    this.affectationService.getAffectationsByEventId(eventId).subscribe({
+      next: (data) => {
+        this.selectedEvent = data[0]; // Assuming only one event is returned
+        console.log('Event loaded:', this.selectedEvent);
+      },
+      error: (err) => {
+        console.error('Error fetching event details:', err);
+      }
+    });
+  }
+
+  // Handle registration view
+  handleViewRegistrations(): void {
+    this.showRegistrationsModal = true;
+  }
+
+  // Close the event view modal
+  closeViewModal(): void {
     this.showViewModal = false;
     this.selectedEvent = null;
   }
 
-  handleViewRegistrations() {
-    this.showRegistrationsModal = true;
-  }
-
-  closeRegistrationsModal() {
+  // Close registration modal
+  closeRegistrationsModal(): void {
     this.showRegistrationsModal = false;
   }
 
-  setRegistrationPage(page: number) {
-    this.registrationPage = page;
+  // Open delete confirmation for personnel
+  openDeleteConfirmation(personnel: any): void {
+    this.selectedPersonnel = personnel;
+    this.showDeleteConfirmationModal = true;
   }
-  openViewModal(event: any) {
-    this.showViewModal = true;
+
+  // Delete selected personnel after confirmation
+  deletePersonnel(): void {
+    if (this.selectedPersonnel) {
+      this.personnelService.deletePersonnel(this.selectedPersonnel.id).subscribe({
+        next: () => {
+          console.log('Personnel deleted:', this.selectedPersonnel);
+          this.showDeleteConfirmationModal = false; // Close the confirmation modal
+          this.getEventDetails(this.idEvent); // Refresh the event details
+        },
+        error: (err) => {
+          console.error('Error deleting personnel:', err);
+        }
+      });
+    }
+  }
+
+  // Close the delete confirmation modal
+  closeDeleteConfirmation(): void {
+    this.showDeleteConfirmationModal = false;
+    this.selectedPersonnel = null;
+  }
+
+  // Set the page for registration view
+  setRegistrationPage(page: number): void {
+    this.registrationPage = page;
   }
 }

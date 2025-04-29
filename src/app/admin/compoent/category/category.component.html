@@ -1,117 +1,80 @@
 <!-- Main content -->
 <main class="flex-1 p-6">
-    <div class="bg-white rounded-lg shadow-sm p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-xl font-semibold text-gray-800">Liste personnel</h1>
-        <button class="bg-[#5a6acf] text-white p-2 rounded-full" (click)="toggleModal()">➕</button>
-      </div>
-  
-      <div class="mb-6">
-        <button class="bg-[#a6abc8] text-white py-2 px-4 rounded-md hover:bg-[#8f95b8]" (click)="toggleModal()">
-          Ajouter Personnel
-        </button>
-      </div>
-  
-      <div class="overflow-x-auto">
-        <table class="w-full text-left">
-          <thead>
-            <tr class="text-gray-500 border-b">
-              <th class="pb-3 font-medium">#</th>
-              <th class="pb-3 font-medium">Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let category of categorys" class="border-b border-gray-100 hover:bg-gray-50">
-              <td class="py-4">{{ category.id }}</td>
-              <td class="py-4">{{ category.name }}</td>
-              <td class="py-4">
-                <div class="flex gap-2">
-                  <button class="p-1 rounded-full bg-gray-100 hover:bg-gray-200">👁️</button>
-                  <button class="p-1 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200">✏️</button>
-                  <button class="p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200">❌</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-  
-      <!-- Pagination -->
-      <div class="flex justify-center mt-6 gap-2">
-        <button class="p-2 rounded-md hover:bg-gray-100">←</button>
-        <ng-container *ngFor="let page of [1,2,3,4]">
-          <button
-            class="h-8 w-8 rounded-md flex items-center justify-center"
-            [ngClass]="{
-              'bg-[#5a6acf] text-white': currentPage === page,
-              'hover:bg-gray-100 text-gray-700': currentPage !== page
-            }"
-            (click)="setPage(page)"
-          >
-            {{ page }}
-          </button>
-        </ng-container>
-        <span class="px-2">...</span>
-        <button class="h-8 w-8 rounded-md hover:bg-gray-100">40</button>
-        <button class="p-2 rounded-md hover:bg-gray-100">→</button>
-      </div>
+  <div class="bg-white rounded-lg shadow-sm p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-xl font-semibold text-gray-800">Liste des catégories</h1>
+      <button class="bg-[#5a6acf] text-white p-2 rounded-full" (click)="toggleModal()">➕</button>
     </div>
-  </main>
-  
-  <!-- Modal -->
-  <!-- Modal Angular avec design personnalisé -->
-<div
-*ngIf="showAddModal"
-class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
->
-<div class="bg-white rounded-lg w-full max-w-2xl mx-4 relative">
-  <!-- Bouton de fermeture -->
-  <button
-    class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-    (click)="toggleModal()"
-  >
-    <span class="text-[#ec5252] text-xl font-bold">&times;</span>
-  </button>
 
-  <div class="p-8">
-    <h2 class="text-2xl font-semibold text-[#1a906b] mb-8 text-center">
-      Ajouter nouveau category :
-    </h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="text-gray-500 border-b">
+            <th class="pb-3 font-medium">Nom</th>
+            <th class="pb-3 font-medium">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of categories" class="border-b border-gray-100 hover:bg-gray-50">
+            <td class="py-4">{{ category.name }}</td>
+            <td class="py-4">
+              <div class="flex gap-2">
+                <button class="p-1 rounded-full bg-gray-100 hover:bg-gray-200" (click)="editCategory(category)">✏️</button>
+                <button class="p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200" (click)="deleteCategory(category.id)">❌</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <form class="space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Pagination -->
+    <div class="flex justify-center mt-6 gap-2">
+      <button class="p-2 rounded-md hover:bg-gray-100">←</button>
+      <ng-container *ngFor="let page of [1,2,3,4]">
+        <button class="h-8 w-8 rounded-md flex items-center justify-center"
+                [ngClass]="{ 'bg-[#5a6acf] text-white': currentPage === page, 'hover:bg-gray-100 text-gray-700': currentPage !== page }"
+                (click)="setPage(page)">
+          {{ page }}
+        </button>
+      </ng-container>
+      <span class="px-2">...</span>
+      <button class="h-8 w-8 rounded-md flex items-center justify-center">40</button>
+      <button class="p-2 rounded-md hover:bg-gray-100">→</button>
+    </div>
+  </div>
+</main>
+
+<!-- Modal for category creation -->
+<div *ngIf="showAddModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg w-full max-w-2xl mx-4 relative">
+    <!-- Close button -->
+    <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" (click)="toggleModal()">
+      <span class="text-[#ec5252] text-xl font-bold">&times;</span>
+    </button>
+
+    <div class="p-8">
+      <h2 class="text-2xl font-semibold text-[#1a906b] mb-8 text-center">
+        Ajouter une catégorie :
+      </h2>
+
+      <form (ngSubmit)="addCategory()" class="space-y-6">
         <!-- Nom -->
         <div class="flex items-center gap-4">
-          <label class="text-[#707fdd] w-24 text-right">Name :</label>
-          <input
-            type="text"
-            
-            name="nom"
-            class="flex-1 px-4 py-3 bg-[#f1f2f9] border-none rounded-md focus:ring-2 focus:ring-[#5a6acf]"
-            required
-          />
+          <label class="text-[#707fdd] w-24 text-right">Nom :</label>
+          <input type="text" [(ngModel)]="categoryForm.name" name="name" class="flex-1 px-4 py-3 bg-[#f1f2f9] border-none rounded-md focus:ring-2 focus:ring-[#5a6acf]" required />
         </div>
-      </div>
-       
-      <!-- Boutons -->
-      <div class="flex justify-end gap-4 mt-12">
-        <button
-          type="button"
-          (click)="toggleModal()"
-          class="px-8 py-3 bg-[#a6abc8] text-white rounded-md hover:bg-[#8f95b8] transition-colors"
-        >
-          Annuler
-        </button>
-        <button
-          type="submit"
-          class="px-8 py-3 bg-[#5932ea] text-white rounded-md hover:bg-[#4a29c4] transition-colors"
-        >
-          Ajouter
-        </button>
-      </div>
-    </form>
+
+        <!-- Boutons -->
+        <div class="flex justify-end gap-4 mt-12">
+          <button type="button" (click)="toggleModal()" class="px-8 py-3 bg-[#a6abc8] text-white rounded-md hover:bg-[#8f95b8] transition-colors">
+            Annuler
+          </button>
+          <button type="submit" class="px-8 py-3 bg-[#5932ea] text-white rounded-md hover:bg-[#4a29c4] transition-colors">
+            Ajouter
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
-</div>
-
-  
